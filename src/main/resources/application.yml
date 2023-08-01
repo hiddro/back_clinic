@@ -1,0 +1,15 @@
+spring:
+  banner:
+    location: classpath:banner/bannerClinic.txt
+  application:
+    name: BACKEND-CHAVEZ-HANPEQ
+  data:
+    mongodb:
+      uri: mongodb+srv://educc0r:laia200619@sgiem-cluster.ghx2esb.mongodb.net/empsgiem
+
+jjwt:
+  secret: 4u7x!A%D*G-KaNdRgUkXp2s5v8y/B?E(H+MbQeShVmYq3t6w9z$C&F)J@NcRfUjW
+  expiration: 2800
+
+server:
+  port: 8081
