@@ -1,5 +1,8 @@
 package com.hanpeq.chavez.clinic.exceptions;
 
+import com.hanpeq.chavez.clinic.security.exceptions.ApiError;
+import com.hanpeq.chavez.clinic.utils.commons.ExceptionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
@@ -20,6 +23,9 @@ import java.util.Map;
 @Component
 @Order(-1)
 public class WebExceptionHandler extends AbstractErrorWebExceptionHandler {
+
+     @Autowired
+     private ExceptionHandler exceptionHandler;
 
     public WebExceptionHandler(ErrorAttributes errorAttributes, WebProperties.Resources resources, ApplicationContext applicationContext,
                                ServerCodecConfigurer configurer) {
@@ -42,27 +48,27 @@ public class WebExceptionHandler extends AbstractErrorWebExceptionHandler {
 
         switch (statusCode){
             case "400":
-                customError.put("message", error.getMessage());
-                customError.put("status", "400");
+                customError.put("error", exceptionHandler.builderApiError(statusCode, error.getMessage(),
+                        HttpStatus.BAD_REQUEST.getReasonPhrase(), generalError));
                 status = HttpStatus.BAD_REQUEST;
                 break;
             case "401":
-                customError.put("message", error.getMessage());
-                customError.put("status", "401");
+                customError.put("error", exceptionHandler.builderApiError(statusCode, error.getMessage(),
+                        HttpStatus.UNAUTHORIZED.getReasonPhrase(), generalError));
                 status = HttpStatus.UNAUTHORIZED;
                 break;
             case "404":
-                customError.put("message", error.getMessage());
-                customError.put("status", "404");
+                customError.put("error", exceptionHandler.builderApiError(statusCode, error.getMessage(),
+                        HttpStatus.NOT_FOUND.getReasonPhrase(), generalError));
                 status = HttpStatus.NOT_FOUND;
                 break;
             case "500":
-                customError.put("message", error.getMessage());
-                customError.put("status", "500");
+                customError.put("error", exceptionHandler.builderApiError(statusCode, error.getMessage(),
+                        HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), generalError));
                 break;
         }
 
-        return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        return ServerResponse.status(status)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(customError));
     }
