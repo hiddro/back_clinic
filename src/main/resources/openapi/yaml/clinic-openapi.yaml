@@ -1,0 +1,86 @@
+---
+openapi: 3.0.0
+info:
+  title: API BUSINESS CLINIC
+  description: API desarrollada para una Clinica
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/EduCC0r/APICLINIC/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: http://localhost:8081/http://localhost:8080/
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: user
+  description: Todo sobre los Usuarios del Sistemma
+- name: rol
+  description: Todo sobre los Roles del Usuario del Sistema
+- name: token
+  description: Todas las operaciones con el Token del Sistema
+paths:
+  /token:
+    post:
+      tags:
+      - token
+      summary: Obtienes el Token del usuario
+      description: Get Token
+      operationId: getToken
+      requestBody:
+        description: Generate Token
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    TokenRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: james@gmail.com
+        password:
+          type: string
+          example: "12345"
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: $2abfFDfdf
+        expiration:
+          type: string
+          example: Wed Aug 02 02:09:44 PET 2023
+    Error:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
