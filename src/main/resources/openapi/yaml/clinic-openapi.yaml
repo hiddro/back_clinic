@@ -52,7 +52,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ApiError'
 components:
   schemas:
     TokenRequest:
@@ -70,17 +70,39 @@ components:
         token:
           type: string
           example: $2abfFDfdf
+        type:
+          type: string
+          example: "access_token"
+        username:
+          type: string
+          example: "educc0r"
+        authenticated:
+          type: string
+          example: true
         expiration:
           type: string
           example: Wed Aug 02 02:09:44 PET 2023
-    Error:
-      required:
-      - code
-      - message
+    ApiError:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: 401
+            message:
+              type: string
+              example: 401 UNAUTHORIZED \"Not Authorized\"
+            status:
+              type: string
+              example: "Unauthorized"
+            timestamp:
+              type: string
+              example: "Thu Aug 03 01:54:34 PET 2023"
+            path:
+              type: string
+              example: "/tokenn"
+            requestId:
+              type: string
+              example: 56ff36d6-1

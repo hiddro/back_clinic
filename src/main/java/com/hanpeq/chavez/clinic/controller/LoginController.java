@@ -31,7 +31,7 @@ public class LoginController implements TokenApi {
     public Mono<ResponseEntity<TokenResponse>> getToken(Mono<TokenRequest> tokenRequest, ServerWebExchange exchange) {
         return tokenRequest
                 .flatMap(tkn -> userService.searchByUser(tkn.getUsername())
-                        .map(usr -> tokenService.buildTokenResponse(tkn.getPassword(), usr)))
+                        .map(usr -> tokenService.getTokenResponse(tkn, usr)))
                 .map(e -> ResponseEntity.ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(e)

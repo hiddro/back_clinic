@@ -1,6 +1,6 @@
 package com.hanpeq.chavez.clinic.exceptions;
 
-import com.hanpeq.chavez.clinic.security.exceptions.ApiError;
+import com.hanpeq.chavez.clinic.dto.ApiError;
 import com.hanpeq.chavez.clinic.utils.commons.ExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.WebProperties;
@@ -41,6 +41,7 @@ public class WebExceptionHandler extends AbstractErrorWebExceptionHandler {
     private Mono<ServerResponse> renderErrorResponse(ServerRequest request){
         Map<String, Object> generalError = getErrorAttributes(request, ErrorAttributeOptions.defaults());
         Map<String, Object> customError = new HashMap<>();
+        ApiError apiError = null;
 
         var status = HttpStatus.INTERNAL_SERVER_ERROR;
         String statusCode = String.valueOf(generalError.get("status"));
@@ -48,28 +49,28 @@ public class WebExceptionHandler extends AbstractErrorWebExceptionHandler {
 
         switch (statusCode){
             case "400":
-                customError.put("error", exceptionHandler.builderApiError(statusCode, error.getMessage(),
-                        HttpStatus.BAD_REQUEST.getReasonPhrase(), generalError));
+                apiError = ApiError.builder().error(exceptionHandler.builderApiError(statusCode, error.getMessage(),
+                        HttpStatus.BAD_REQUEST.getReasonPhrase(), generalError)).build();
                 status = HttpStatus.BAD_REQUEST;
                 break;
             case "401":
-                customError.put("error", exceptionHandler.builderApiError(statusCode, error.getMessage(),
-                        HttpStatus.UNAUTHORIZED.getReasonPhrase(), generalError));
+                apiError = ApiError.builder().error(exceptionHandler.builderApiError(statusCode, error.getMessage(),
+                        HttpStatus.UNAUTHORIZED.getReasonPhrase(), generalError)).build();
                 status = HttpStatus.UNAUTHORIZED;
                 break;
             case "404":
-                customError.put("error", exceptionHandler.builderApiError(statusCode, error.getMessage(),
-                        HttpStatus.NOT_FOUND.getReasonPhrase(), generalError));
+                apiError = ApiError.builder().error(exceptionHandler.builderApiError(statusCode, error.getMessage(),
+                        HttpStatus.NOT_FOUND.getReasonPhrase(), generalError)).build();
                 status = HttpStatus.NOT_FOUND;
                 break;
             case "500":
-                customError.put("error", exceptionHandler.builderApiError(statusCode, error.getMessage(),
-                        HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), generalError));
+                apiError = ApiError.builder().error(exceptionHandler.builderApiError(statusCode, error.getMessage(),
+                        HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), generalError)).build();
                 break;
         }
 
         return ServerResponse.status(status)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(customError));
+                .body(BodyInserters.fromValue(apiError));
     }
 }

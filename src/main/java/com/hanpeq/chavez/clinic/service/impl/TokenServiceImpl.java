@@ -1,6 +1,7 @@
 package com.hanpeq.chavez.clinic.service.impl;
 
 import com.hanpeq.chavez.clinic.builder.TokenResponseBuilder;
+import com.hanpeq.chavez.clinic.dto.TokenRequest;
 import com.hanpeq.chavez.clinic.dto.TokenResponse;
 import com.hanpeq.chavez.clinic.security.models.User;
 import com.hanpeq.chavez.clinic.security.utils.JWTUtil;
@@ -23,12 +24,12 @@ public class TokenServiceImpl implements TokenService {
     private TokenResponseBuilder tokenResponseBuilder;
 
     @Override
-    public TokenResponse buildTokenResponse(String passRequest, User userDetails) {
-        if(BCrypt.checkpw(passRequest, userDetails.getPassword())){
+    public TokenResponse getTokenResponse(TokenRequest request, User userDetails) {
+        if(BCrypt.checkpw(request.getPassword(), userDetails.getPassword())){
             String token = jwtUtil.generateToken(userDetails);
             String expiration = jwtUtil.getExpirationDateFromTokenString(token);
 
-            return tokenResponseBuilder.builderTokenResponse(token, expiration);
+            return tokenResponseBuilder.builderTokenResponse(token, expiration, request.getUsername());
         }else{
             throw new BadCredentialsException("Bad Credentials");
         }
