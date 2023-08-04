@@ -34,7 +34,6 @@ public class UserServiceImpl extends CrudServiceImpl<UserPrincipal, String> impl
 
     @Override
     public Mono<User> searchByUser(String username) {
-//        Mono<UserPrincipal> userMono = userRepositories.findOneByUsername(username);
         List<String> roles = new ArrayList<>();
 
         return userRepositories.findOneByUsername(username).flatMap(u -> {
@@ -52,7 +51,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserPrincipal, String> impl
                                 return Mono.just(u);
                             });
                 })
-                .flatMap(u -> Mono.just(new User(u.getUsername(), u.getPassword(), u.getStatus(), roles)))
+                .flatMap(u -> Mono.just(new User(u.getUsername(), u.getPassword(), Boolean.parseBoolean(u.getStatus()), roles)))
                 .switchIfEmpty(Mono.just(User.builder().build()));
     }
 }

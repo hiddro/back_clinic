@@ -17,6 +17,68 @@ tags:
 - name: token
   description: Todas las operaciones con el Token del Sistema
 paths:
+  /user:
+    get:
+      tags:
+      - user
+      summary: List all users
+      description: Return list Users
+      operationId: listUsers
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+      - user
+      summary: Create a user
+      description: Add a new User
+      operationId: registerUser
+      requestBody:
+        description: Create a new user in the SGIEM
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
   /token:
     post:
       tags:
@@ -55,6 +117,64 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    UserRequest:
+      type: object
+      properties:
+        names:
+          type: string
+          example: Edward Andres
+        lastNames:
+          type: string
+          example: Cordova Chavez
+        username:
+          type: string
+          example: eduCC0r
+        password:
+          type: string
+          example: '*****'
+        email:
+          type: string
+          example: edd.ckalb@gmail.com
+        code:
+          type: string
+          example: ABCD1234
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1"
+        names:
+          type: string
+          example: Edward Andres
+        lastNames:
+          type: string
+          example: Cordova Chavez
+        username:
+          type: string
+          example: eduCC0r
+        email:
+          type: string
+          example: edd.ckalb@gmail.com
+        code:
+          type: string
+          example: ABCD1234
+        status:
+          type: string
+          example: "true"
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/RolDetails'
+    RolDetails:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1"
+        name:
+          type: string
+          example: ADMIN
     TokenRequest:
       type: object
       properties:
@@ -72,13 +192,13 @@ components:
           example: $2abfFDfdf
         type:
           type: string
-          example: "access_token"
+          example: access_token
         username:
           type: string
-          example: "educc0r"
+          example: educc0r
         authenticated:
           type: string
-          example: true
+          example: "true"
         expiration:
           type: string
           example: Wed Aug 02 02:09:44 PET 2023
@@ -86,23 +206,25 @@ components:
       type: object
       properties:
         error:
-          type: object
-          properties:
-            code:
-              type: string
-              example: 401
-            message:
-              type: string
-              example: 401 UNAUTHORIZED \"Not Authorized\"
-            status:
-              type: string
-              example: "Unauthorized"
-            timestamp:
-              type: string
-              example: "Thu Aug 03 01:54:34 PET 2023"
-            path:
-              type: string
-              example: "/tokenn"
-            requestId:
-              type: string
-              example: 56ff36d6-1
+          $ref: '#/components/schemas/ApiError_error'
+    ApiError_error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "401"
+        message:
+          type: string
+          example: 401 UNAUTHORIZED \"Not Authorized\"
+        status:
+          type: string
+          example: Unauthorized
+        timestamp:
+          type: string
+          example: Thu Aug 03 01:54:34 PET 2023
+        path:
+          type: string
+          example: /tokenn
+        requestId:
+          type: string
+          example: 56ff36d6-1

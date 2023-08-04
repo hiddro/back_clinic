@@ -10,11 +10,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Document(collection = "roles")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RolePrinciṕal {
 
     @Id
+    @EqualsAndHashCode.Include
     private String id;
 
     private String name;
