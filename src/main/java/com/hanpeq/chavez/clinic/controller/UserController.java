@@ -1,30 +1,46 @@
 package com.hanpeq.chavez.clinic.controller;
 
+import com.hanpeq.chavez.clinic.api.v1.UserApi;
+import com.hanpeq.chavez.clinic.dto.UserRequest;
+import com.hanpeq.chavez.clinic.dto.UserResponse;
 import com.hanpeq.chavez.clinic.models.UserPrincipal;
 import com.hanpeq.chavez.clinic.service.UserService;
+import com.hanpeq.chavez.clinic.utils.commons.Commons;
+import com.hanpeq.chavez.clinic.utils.constants.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/api/user")
-public class UserController {
+@RequestMapping(Constants.STRING_CLINIC_PATH)
+public class UserController implements UserApi {
 
     @Autowired
     public UserService userService;
 
-    @GetMapping
-    public Mono<ResponseEntity<Flux<UserPrincipal>>> findAll(){
-        Flux<UserPrincipal> clientFlux = userService.findAll();
+    @Override
+    public Mono<ResponseEntity<Flux<UserResponse>>> listUsers(ServerWebExchange exchange) {
+        return userService.listUsers()
+                .map(e -> ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(e)
+                );
+    }
 
-        return Mono.just(ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(clientFlux)
-        ).defaultIfEmpty(ResponseEntity.notFound().build());
+    @Override
+    public Mono<ResponseEntity<UserResponse>> registerUser(Mono<UserRequest> userRequest, ServerWebExchange exchange) {
+        return userRequest.flatMap(user -> userService.registerUser(user))
+                .map(e -> ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(e)
+                );
     }
 }
