@@ -14,4 +14,6 @@ public interface UserService extends CrudService<UserPrincipal, String> {
     Mono<UserResponse> registerUser(UserRequest userRequest);
 
     Mono<Flux<UserResponse>> listUsers();
+
+    Mono<UserResponse> getUserByUsername(String username);
 }

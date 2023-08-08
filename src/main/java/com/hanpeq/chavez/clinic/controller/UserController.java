@@ -43,4 +43,13 @@ public class UserController implements UserApi {
                         .body(e)
                 );
     }
+
+    @Override
+    public Mono<ResponseEntity<UserResponse>> getUserByUsername(String username, ServerWebExchange exchange) {
+        return userService.getUserByUsername(username)
+                .map(e -> ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(e)
+                );
+    }
 }

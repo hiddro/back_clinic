@@ -67,7 +67,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserPrincipal, String> impl
                             });
                 })
                 .flatMap(u -> Mono.just(new User(u.getUsername(), u.getPassword(), Boolean.parseBoolean(u.getStatus()), roles)))
-                .switchIfEmpty(Mono.just(User.builder().build()));
+                .switchIfEmpty(Mono.error(new BadCredentialsException("Bad Credentials")));
     }
 
     @Override
@@ -88,5 +88,12 @@ public class UserServiceImpl extends CrudServiceImpl<UserPrincipal, String> impl
     public Mono<Flux<UserResponse>> listUsers() {
         return Mono.just(userRepositories.findAll()
                 .map(userResponseBuilder::buildOfUserPrincipal));
+    }
+
+    @Override
+    public Mono<UserResponse> getUserByUsername(String username) {
+        return userRepositories.findOneByUsername(username)
+                .map(userResponseBuilder::buildOfUserPrincipal)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parámetro incorrecto.")));
     }
 }
