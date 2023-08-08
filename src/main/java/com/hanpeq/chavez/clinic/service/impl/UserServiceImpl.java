@@ -79,7 +79,9 @@ public class UserServiceImpl extends CrudServiceImpl<UserPrincipal, String> impl
                     }
                     return Mono.just(UserResponse.builder().build());
                 })
-                .switchIfEmpty(userRepositories.save(userRequestBuilder.buildOfUserRequest(userRequest)).map(userResponseBuilder::buildOfUserPrincipal));
+                .switchIfEmpty(roleRepositories.findOneByName("USER")
+                        .flatMap(rol -> userRepositories.save(userRequestBuilder.buildOfUserRequest(userRequest, rol)))
+                        .map(userResponseBuilder::buildOfUserPrincipal));
     }
 
     @Override

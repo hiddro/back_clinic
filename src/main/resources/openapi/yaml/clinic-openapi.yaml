@@ -5,22 +5,22 @@ info:
   description: API desarrollada para una Clinica
   version: 1.0.0
 servers:
-- url: https://virtserver.swaggerhub.com/EduCC0r/APICLINIC/1.0.0
-  description: SwaggerHub API Auto Mocking
-- url: http://localhost:8081/http://localhost:8080/
-  description: SwaggerHub API Auto Mocking
+  - url: https://virtserver.swaggerhub.com/EduCC0r/APICLINIC/1.0.0
+    description: SwaggerHub API Auto Mocking
+  - url: /http://localhost:8080/
+    description: SwaggerHub API Auto Mocking
 tags:
-- name: user
-  description: Todo sobre los Usuarios del Sistemma
-- name: rol
-  description: Todo sobre los Roles del Usuario del Sistema
-- name: token
-  description: Todas las operaciones con el Token del Sistema
+  - name: user
+    description: Todo sobre los Usuarios del Sistemma
+  - name: rol
+    description: Todo sobre los Roles del Usuario del Sistema
+  - name: token
+    description: Todas las operaciones con el Token del Sistema
 paths:
   /user:
     get:
       tags:
-      - user
+        - user
       summary: List all users
       description: Return list Users
       operationId: listUsers
@@ -46,7 +46,7 @@ paths:
                 $ref: '#/components/schemas/ApiError'
     post:
       tags:
-      - user
+        - user
       summary: Create a user
       description: Add a new User
       operationId: registerUser
@@ -79,10 +79,193 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+  /user/{username}:
+    get:
+      tags:
+        - user
+      summary: Find by user for Username
+      description: Return user for Username of database
+      operationId: getUserByUsername
+      parameters:
+        - name: username
+          in: path
+          description: username register of database
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /user/assign/{rol}/{username}:
+    put:
+      tags:
+        - user
+      summary: Assign user added rol
+      description: This can only be done by the logged in user.
+      operationId: assignUser
+      parameters:
+        - name: rol
+          in: path
+          description: rol that need to be added
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            enum:
+              - ADMIN
+              - USER
+              - MEDIC
+        - name: username
+          in: path
+          description: username of the user
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /user/password/{email}:
+    put:
+      tags:
+        - user
+      summary: Reset password to User
+      description: This can only be done by the logged in user.
+      operationId: resetPassword
+      parameters:
+        - name: email
+          in: path
+          description: email user
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: Update an existent password the user.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordRequest'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PasswordResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /rol:
+    get:
+      tags:
+        - rol
+      summary: List all rols
+      description: Return list Rols
+      operationId: listRols
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RolDetails'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RolDetails'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+        - rol
+      summary: Crear rol necesarios
+      description: Add new Rol
+      operationId: registerRol
+      requestBody:
+        description: Body Rol Request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/RolRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RolRequest'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolDetails'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RolDetails'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
   /token:
     post:
       tags:
-      - token
+        - token
       summary: Obtienes el Token del usuario
       description: Get Token
       operationId: getToken
@@ -175,6 +358,32 @@ components:
         name:
           type: string
           example: ADMIN
+          enum:
+            - ADMIN
+            - USER
+            - MEDIC
+    PasswordRequest:
+      type: object
+      properties:
+        password:
+          type: string
+          example: '*****'
+    PasswordResponse:
+      type: object
+      properties:
+        validate:
+          type: string
+          example: "true"
+    RolRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: ADMIN
+          enum:
+            - ADMIN
+            - USER
+            - MEDIC
     TokenRequest:
       type: object
       properties:
