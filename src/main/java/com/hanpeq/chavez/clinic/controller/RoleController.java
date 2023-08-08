@@ -23,7 +23,11 @@ public class RoleController implements RoleApi {
 
     @Override
     public Mono<ResponseEntity<Flux<RolDetails>>> listRoles(ServerWebExchange exchange) {
-        return RoleApi.super.listRoles(exchange);
+        return roleService.listRoles()
+                .map(e -> ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(e)
+                );
     }
 
     @Override

@@ -52,6 +52,7 @@ public class RoleServiceImpl extends CrudServiceImpl<RolePrinciṕal, String> im
 
     @Override
     public Mono<Flux<RolDetails>> listRoles() {
-        return null;
+        return Mono.just(roleRepositories.findAll()
+                .map(roleResponseBuilder::buildOfRolePrincipal));
     }
 }
