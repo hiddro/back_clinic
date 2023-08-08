@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 public class UserController implements UserApi {
 
     @Autowired
-    public UserService userService;
+    private UserService userService;
 
     @Override
     public Mono<ResponseEntity<Flux<UserResponse>>> listUsers(ServerWebExchange exchange) {

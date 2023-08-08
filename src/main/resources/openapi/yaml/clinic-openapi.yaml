@@ -12,7 +12,7 @@ servers:
 tags:
   - name: user
     description: Todo sobre los Usuarios del Sistemma
-  - name: rol
+  - name: role
     description: Todo sobre los Roles del Usuario del Sistema
   - name: token
     description: Todas las operaciones con el Token del Sistema
@@ -200,13 +200,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
-  /rol:
+  /role:
     get:
       tags:
-        - rol
-      summary: List all rols
-      description: Return list Rols
-      operationId: listRols
+        - role
+      summary: List all roles
+      description: Return list Roles
+      operationId: listRoles
       responses:
         "200":
           description: successful operation
@@ -229,12 +229,12 @@ paths:
                 $ref: '#/components/schemas/ApiError'
     post:
       tags:
-        - rol
+        - role
       summary: Crear rol necesarios
-      description: Add new Rol
-      operationId: registerRol
+      description: Add new Role
+      operationId: registerRole
       requestBody:
-        description: Body Rol Request
+        description: Body Role Request
         content:
           application/json:
             schema:

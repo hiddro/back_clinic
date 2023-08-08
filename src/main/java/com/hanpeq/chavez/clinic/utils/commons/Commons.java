@@ -1,5 +1,6 @@
 package com.hanpeq.chavez.clinic.utils.commons;
 
+import com.hanpeq.chavez.clinic.dto.RolDetails;
 import com.hanpeq.chavez.clinic.dto.UserRequest;
 import com.hanpeq.chavez.clinic.models.UserPrincipal;
 import lombok.AccessLevel;
@@ -27,5 +28,15 @@ public class Commons {
                 .toUpperCase();
 
         return generatedString;
+    }
+
+    public static RolDetails.NameEnum validateNameRol(String name){
+        return name.equalsIgnoreCase("USER") ? RolDetails.NameEnum.USER :
+                name.equalsIgnoreCase("MEDIC") ? RolDetails.NameEnum.MEDIC :
+                        name.equalsIgnoreCase("ADMIN") ? RolDetails.NameEnum.ADMIN : RolDetails.NameEnum.USER;
+    }
+
+    public static Boolean validateFilter(String name){
+        return name.equalsIgnoreCase("USER") || name.equalsIgnoreCase("MEDIC") || name.equalsIgnoreCase("ADMIN");
     }
 }

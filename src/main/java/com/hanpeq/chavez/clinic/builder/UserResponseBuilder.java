@@ -27,14 +27,8 @@ public class UserResponseBuilder {
                 .status(userPrincipal.getStatus())
                 .roles(userPrincipal.getRoles() == null ? new ArrayList<>() : Arrays.asList(RolDetails.builder()
                         .id(userPrincipal.getRoles().get(0).getId())
-                        .name(validateNameRol(userPrincipal.getRoles().get(0).getName()))
+                        .name(Commons.validateNameRol(userPrincipal.getRoles().get(0).getName()))
                         .build()))
                 .build();
-    }
-
-    public RolDetails.NameEnum validateNameRol(String titulo){
-        return titulo.equalsIgnoreCase("USER") ? RolDetails.NameEnum.USER :
-                titulo.equalsIgnoreCase("MEDIC") ? RolDetails.NameEnum.MEDIC :
-                        titulo.equalsIgnoreCase("ADMIN") ? RolDetails.NameEnum.ADMIN : RolDetails.NameEnum.USER;
     }
 }
