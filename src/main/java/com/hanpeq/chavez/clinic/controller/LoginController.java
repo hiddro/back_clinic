@@ -13,8 +13,6 @@ import com.hanpeq.chavez.clinic.api.v1.TokenApi;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.Date;
-
 @RestController
 public class LoginController implements TokenApi {
 

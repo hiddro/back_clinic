@@ -1,7 +1,6 @@
 package com.hanpeq.chavez.clinic.utils.commons;
 
 import com.hanpeq.chavez.clinic.dto.ApiErrorError;
-import com.hanpeq.chavez.clinic.security.exceptions.ApiError;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;

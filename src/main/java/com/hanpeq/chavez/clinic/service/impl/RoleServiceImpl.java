@@ -4,7 +4,6 @@ import com.hanpeq.chavez.clinic.builder.RoleRequestBuilder;
 import com.hanpeq.chavez.clinic.builder.RoleResponseBuilder;
 import com.hanpeq.chavez.clinic.dto.RolDetails;
 import com.hanpeq.chavez.clinic.dto.RolRequest;
-import com.hanpeq.chavez.clinic.dto.UserResponse;
 import com.hanpeq.chavez.clinic.models.RolePrinciṕal;
 import com.hanpeq.chavez.clinic.repository.GenericRepo;
 import com.hanpeq.chavez.clinic.repository.RoleRepositories;

@@ -1,11 +1,7 @@
 package com.hanpeq.chavez.clinic.utils.commons;
 
 import com.hanpeq.chavez.clinic.dto.RolDetails;
-import com.hanpeq.chavez.clinic.dto.UserRequest;
-import com.hanpeq.chavez.clinic.models.UserPrincipal;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;

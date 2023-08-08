@@ -1,11 +1,9 @@
 package com.hanpeq.chavez.clinic.builder;
 
 import com.hanpeq.chavez.clinic.dto.RolDetails;
-import com.hanpeq.chavez.clinic.dto.UserRequest;
 import com.hanpeq.chavez.clinic.dto.UserResponse;
 import com.hanpeq.chavez.clinic.models.UserPrincipal;
 import com.hanpeq.chavez.clinic.utils.commons.Commons;
-import com.hanpeq.chavez.clinic.utils.constants.Constants;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 

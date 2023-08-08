@@ -10,12 +10,9 @@ import com.hanpeq.chavez.clinic.repository.RoleRepositories;
 import com.hanpeq.chavez.clinic.repository.UserRepositories;
 import com.hanpeq.chavez.clinic.security.models.User;
 import com.hanpeq.chavez.clinic.service.UserService;
-import com.hanpeq.chavez.clinic.utils.commons.Commons;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
@@ -32,9 +29,6 @@ public class UserServiceImpl extends CrudServiceImpl<UserPrincipal, String> impl
 
     @Autowired
     private RoleRepositories roleRepositories;
-
-//    @Autowired
-//    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private UserRequestBuilder userRequestBuilder;
