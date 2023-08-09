@@ -32,4 +32,9 @@ public class UserRequestBuilder {
                 .roles(rolePrinciṕal == null ? new ArrayList<>() : Arrays.asList(rolePrinciṕal))
                 .build();
     }
+
+    public UserPrincipal buildPassword(UserPrincipal userPrincipal, String password){
+        userPrincipal.setPassword(passwordEncoder.encode(password));
+        return userPrincipal;
+    }
 }

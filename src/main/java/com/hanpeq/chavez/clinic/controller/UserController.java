@@ -61,6 +61,10 @@ public class UserController implements UserApi {
 
     @Override
     public Mono<ResponseEntity<PasswordResponse>> resetPassword(String email, Mono<PasswordRequest> passwordRequest, ServerWebExchange exchange) {
-        return UserApi.super.resetPassword(email, passwordRequest, exchange);
+        return passwordRequest.flatMap(user -> userService.resetPassword(email, user.getPassword()))
+                .map(e -> ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(e)
+                );
     }
 }

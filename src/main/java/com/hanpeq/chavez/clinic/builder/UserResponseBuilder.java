@@ -1,5 +1,6 @@
 package com.hanpeq.chavez.clinic.builder;
 
+import com.hanpeq.chavez.clinic.dto.PasswordResponse;
 import com.hanpeq.chavez.clinic.dto.RolDetails;
 import com.hanpeq.chavez.clinic.dto.UserResponse;
 import com.hanpeq.chavez.clinic.models.RolePrinciṕal;
@@ -36,5 +37,11 @@ public class UserResponseBuilder {
                 .name(Commons.validateNameRol(rol.getName()))
                 .build())
                 .collect(Collectors.toList());
+    }
+
+    public PasswordResponse buildPasswordResponse(UserPrincipal userPrincipal){
+        return PasswordResponse.builder()
+                .validate("true")
+                .build();
     }
 }

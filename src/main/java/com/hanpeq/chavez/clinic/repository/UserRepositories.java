@@ -5,4 +5,6 @@ import reactor.core.publisher.Mono;
 
 public interface UserRepositories extends GenericRepo<UserPrincipal, String> {
     Mono<UserPrincipal> findOneByUsername(String username);
+
+    Mono<UserPrincipal> findOneByEmail(String email);
 }
