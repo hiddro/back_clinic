@@ -1,5 +1,7 @@
 package com.hanpeq.chavez.clinic.service.impl;
 
+import com.hanpeq.chavez.clinic.builder.RoleRequestBuilder;
+import com.hanpeq.chavez.clinic.builder.RoleResponseBuilder;
 import com.hanpeq.chavez.clinic.builder.UserRequestBuilder;
 import com.hanpeq.chavez.clinic.builder.UserResponseBuilder;
 import com.hanpeq.chavez.clinic.dto.UserRequest;
@@ -10,6 +12,7 @@ import com.hanpeq.chavez.clinic.repository.RoleRepositories;
 import com.hanpeq.chavez.clinic.repository.UserRepositories;
 import com.hanpeq.chavez.clinic.security.models.User;
 import com.hanpeq.chavez.clinic.service.UserService;
+import com.hanpeq.chavez.clinic.utils.commons.Commons;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -35,6 +38,12 @@ public class UserServiceImpl extends CrudServiceImpl<UserPrincipal, String> impl
 
     @Autowired
     private UserResponseBuilder userResponseBuilder;
+
+    @Autowired
+    private RoleRequestBuilder roleRequestBuilder;
+
+    @Autowired
+    private RoleResponseBuilder roleResponseBuilder;
 
     @Override
     protected GenericRepo<UserPrincipal, String> getRepo() {
@@ -89,5 +98,18 @@ public class UserServiceImpl extends CrudServiceImpl<UserPrincipal, String> impl
         return userRepositories.findOneByUsername(username)
                 .map(userResponseBuilder::buildOfUserPrincipal)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parámetro incorrecto.")));
+    }
+
+    @Override
+    public Mono<UserResponse> assingRolToUser(String rol, String username) {
+        return userRepositories.findOneByUsername(username)
+                .filter(user -> !Commons.validateArrayRol(user.getRoles(),  rol))
+                .flatMap(u -> roleRepositories.findOneByName(rol)
+                        .flatMap(r -> {
+                            u.getRoles().add(r);
+                            return userRepositories.save(u);
+                        })
+                        .map(userResponseBuilder::buildOfUserPrincipal))
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parametro Incorrecto Role/Username.")));
     }
 }

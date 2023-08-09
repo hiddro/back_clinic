@@ -14,4 +14,10 @@ public class RoleRequestBuilder {
                 .name(rolRequest.getName().toString())
                 .build();
     }
+
+    public RolePrinciṕal buildOfString(String name){
+        return RolePrinciṕal.builder()
+                .name(name)
+                .build();
+    }
 }

@@ -16,4 +16,6 @@ public interface UserService extends CrudService<UserPrincipal, String> {
     Mono<Flux<UserResponse>> listUsers();
 
     Mono<UserResponse> getUserByUsername(String username);
+
+    Mono<UserResponse> assingRolToUser(String rol, String username);
 }

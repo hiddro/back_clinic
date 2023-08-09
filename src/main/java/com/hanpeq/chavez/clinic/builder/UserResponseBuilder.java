@@ -2,6 +2,7 @@ package com.hanpeq.chavez.clinic.builder;
 
 import com.hanpeq.chavez.clinic.dto.RolDetails;
 import com.hanpeq.chavez.clinic.dto.UserResponse;
+import com.hanpeq.chavez.clinic.models.RolePrinciṕal;
 import com.hanpeq.chavez.clinic.models.UserPrincipal;
 import com.hanpeq.chavez.clinic.utils.commons.Commons;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @AllArgsConstructor
@@ -23,10 +26,15 @@ public class UserResponseBuilder {
                 .email(userPrincipal.getEmail())
                 .code(userPrincipal.getCode())
                 .status(userPrincipal.getStatus())
-                .roles(userPrincipal.getRoles() == null ? new ArrayList<>() : Arrays.asList(RolDetails.builder()
-                        .id(userPrincipal.getRoles().get(0).getId())
-                        .name(Commons.validateNameRol(userPrincipal.getRoles().get(0).getName()))
-                        .build()))
+                .roles(userPrincipal.getRoles() == null ? new ArrayList<>() : buildRolDetails(userPrincipal.getRoles()))
                 .build();
+    }
+
+    public List<RolDetails> buildRolDetails(List<RolePrinciṕal> roles){
+        return roles.stream().map(rol -> RolDetails.builder()
+                .id(rol.getId())
+                .name(Commons.validateNameRol(rol.getName()))
+                .build())
+                .collect(Collectors.toList());
     }
 }

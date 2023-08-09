@@ -1,6 +1,8 @@
 package com.hanpeq.chavez.clinic.controller;
 
 import com.hanpeq.chavez.clinic.api.v1.UserApi;
+import com.hanpeq.chavez.clinic.dto.PasswordRequest;
+import com.hanpeq.chavez.clinic.dto.PasswordResponse;
 import com.hanpeq.chavez.clinic.dto.UserRequest;
 import com.hanpeq.chavez.clinic.dto.UserResponse;
 import com.hanpeq.chavez.clinic.service.UserService;
@@ -46,5 +48,19 @@ public class UserController implements UserApi {
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(e)
                 );
+    }
+
+    @Override
+    public Mono<ResponseEntity<UserResponse>> assignUser(String rol, String username, ServerWebExchange exchange) {
+        return userService.assingRolToUser(rol, username)
+                .map(e -> ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(e)
+                );
+    }
+
+    @Override
+    public Mono<ResponseEntity<PasswordResponse>> resetPassword(String email, Mono<PasswordRequest> passwordRequest, ServerWebExchange exchange) {
+        return UserApi.super.resetPassword(email, passwordRequest, exchange);
     }
 }

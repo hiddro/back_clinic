@@ -1,10 +1,12 @@
 package com.hanpeq.chavez.clinic.utils.commons;
 
 import com.hanpeq.chavez.clinic.dto.RolDetails;
+import com.hanpeq.chavez.clinic.models.RolePrinciṕal;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -34,5 +36,12 @@ public class Commons {
 
     public static Boolean validateFilter(String name){
         return name.equalsIgnoreCase("USER") || name.equalsIgnoreCase("MEDIC") || name.equalsIgnoreCase("ADMIN");
+    }
+
+    public static Boolean validateArrayRol(List<RolePrinciṕal> roles, String role){
+        return roles.stream()
+                .filter(rol -> rol.getName().equalsIgnoreCase(role))
+                .findFirst()
+                .isPresent();
     }
 }
