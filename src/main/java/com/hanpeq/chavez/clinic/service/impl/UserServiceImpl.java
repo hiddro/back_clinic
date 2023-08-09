@@ -7,6 +7,7 @@ import com.hanpeq.chavez.clinic.builder.UserResponseBuilder;
 import com.hanpeq.chavez.clinic.dto.PasswordResponse;
 import com.hanpeq.chavez.clinic.dto.UserRequest;
 import com.hanpeq.chavez.clinic.dto.UserResponse;
+import com.hanpeq.chavez.clinic.dto.UserUpdateRequest;
 import com.hanpeq.chavez.clinic.models.UserPrincipal;
 import com.hanpeq.chavez.clinic.repository.GenericRepo;
 import com.hanpeq.chavez.clinic.repository.RoleRepositories;
@@ -120,5 +121,13 @@ public class UserServiceImpl extends CrudServiceImpl<UserPrincipal, String> impl
                 .flatMap(user -> userRepositories.save(userRequestBuilder.buildPassword(user, password))
                 .map(userResponseBuilder::buildPasswordResponse))
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parametro email incorrecto.")));
+    }
+
+    @Override
+    public Mono<UserResponse> updateUser(String username, UserUpdateRequest userUpdateRequest) {
+        return userRepositories.findOneByUsername(username)
+                .flatMap(user -> userRepositories.save(userRequestBuilder.buildUserPrincipalUpdate(user, userUpdateRequest)))
+                .map(userResponseBuilder::buildOfUserPrincipal)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parametro Incorrecto Username.")));
     }
 }

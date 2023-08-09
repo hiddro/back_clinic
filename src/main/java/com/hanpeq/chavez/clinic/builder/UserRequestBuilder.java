@@ -1,6 +1,7 @@
 package com.hanpeq.chavez.clinic.builder;
 
 import com.hanpeq.chavez.clinic.dto.UserRequest;
+import com.hanpeq.chavez.clinic.dto.UserUpdateRequest;
 import com.hanpeq.chavez.clinic.models.RolePrinciṕal;
 import com.hanpeq.chavez.clinic.models.UserPrincipal;
 import com.hanpeq.chavez.clinic.utils.commons.Commons;
@@ -34,7 +35,30 @@ public class UserRequestBuilder {
     }
 
     public UserPrincipal buildPassword(UserPrincipal userPrincipal, String password){
-        userPrincipal.setPassword(passwordEncoder.encode(password));
-        return userPrincipal;
+        return UserPrincipal.builder()
+                .id(userPrincipal.getId())
+                .names(userPrincipal.getNames())
+                .lastNames(userPrincipal.getLastNames())
+                .username(userPrincipal.getUsername())
+                .password(passwordEncoder.encode(password))
+                .email(userPrincipal.getEmail())
+                .code(userPrincipal.getCode())
+                .status(userPrincipal.getStatus())
+                .roles(userPrincipal.getRoles())
+                .build();
+    }
+
+    public UserPrincipal buildUserPrincipalUpdate(UserPrincipal userPrincipal, UserUpdateRequest userUpdateRequest){
+        return UserPrincipal.builder()
+                .id(userPrincipal.getId())
+                .names(userUpdateRequest.getNames())
+                .lastNames(userUpdateRequest.getLastNames())
+                .username(userPrincipal.getUsername())
+                .password(passwordEncoder.encode(userUpdateRequest.getPassword()))
+                .email(userUpdateRequest.getEmail())
+                .code(userPrincipal.getCode())
+                .status(userPrincipal.getStatus())
+                .roles(userPrincipal.getRoles())
+                .build();
     }
 }

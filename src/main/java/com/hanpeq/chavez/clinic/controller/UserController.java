@@ -1,10 +1,7 @@
 package com.hanpeq.chavez.clinic.controller;
 
 import com.hanpeq.chavez.clinic.api.v1.UserApi;
-import com.hanpeq.chavez.clinic.dto.PasswordRequest;
-import com.hanpeq.chavez.clinic.dto.PasswordResponse;
-import com.hanpeq.chavez.clinic.dto.UserRequest;
-import com.hanpeq.chavez.clinic.dto.UserResponse;
+import com.hanpeq.chavez.clinic.dto.*;
 import com.hanpeq.chavez.clinic.service.UserService;
 import com.hanpeq.chavez.clinic.utils.constants.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +59,15 @@ public class UserController implements UserApi {
     @Override
     public Mono<ResponseEntity<PasswordResponse>> resetPassword(String email, Mono<PasswordRequest> passwordRequest, ServerWebExchange exchange) {
         return passwordRequest.flatMap(user -> userService.resetPassword(email, user.getPassword()))
+                .map(e -> ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(e)
+                );
+    }
+
+    @Override
+    public Mono<ResponseEntity<UserResponse>> updateUser(String username, Mono<UserUpdateRequest> userUpdateRequest, ServerWebExchange exchange) {
+        return userUpdateRequest.flatMap(user -> userService.updateUser(username, user))
                 .map(e -> ResponseEntity.ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(e)
