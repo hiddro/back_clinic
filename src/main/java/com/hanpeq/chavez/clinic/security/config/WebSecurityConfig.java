@@ -11,7 +11,12 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
 
 @EnableWebFluxSecurity
 @Configuration
@@ -32,7 +37,8 @@ public class WebSecurityConfig {
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http){
         return http
-                .cors().disable()
+                .cors()
+                .configurationSource(corsConfigurationSource()).and()
                 .exceptionHandling()
                 .authenticationEntryPoint((swe, e) -> Mono.fromRunnable(() -> {
                     swe.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
@@ -48,8 +54,20 @@ public class WebSecurityConfig {
                 .pathMatchers("/login").permitAll()
                 .pathMatchers("/token").permitAll()
                 .pathMatchers("/clinic/user/**").authenticated()
-                .pathMatchers("/clinic/role/**").authenticated()
                 .anyExchange().authenticated()
                 .and().build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:4200")); // Agregar los orígenes permitidos
+        corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // Agregar los métodos permitidos
+        corsConfig.setAllowedHeaders(Arrays.asList("*")); // Permitir todos los encabezados
+        corsConfig.setAllowCredentials(true); // Permitir credenciales (cookies, autenticación)
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig); // Aplicar esta configuración a todas las rutas
+        return source;
     }
 }

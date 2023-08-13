@@ -8,6 +8,7 @@ import com.hanpeq.chavez.clinic.utils.constants.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
@@ -15,6 +16,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(Constants.STRING_CLINIC_PATH)
 public class RoleController implements RoleApi {
 

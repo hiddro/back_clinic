@@ -8,12 +8,14 @@ import com.hanpeq.chavez.clinic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import com.hanpeq.chavez.clinic.api.v1.TokenApi;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class LoginController implements TokenApi {
 
     @Autowired
