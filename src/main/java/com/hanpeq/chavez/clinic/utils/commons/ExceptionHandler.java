@@ -1,6 +1,6 @@
 package com.hanpeq.chavez.clinic.utils.commons;
 
-import com.hanpeq.chavez.clinic.dto.ApiErrorError;
+import com.hanpeq.chavez.clinic.dto.ErrorDetail;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,8 +12,8 @@ import java.util.Map;
 @ControllerAdvice
 public class ExceptionHandler {
 
-    public ApiErrorError builderApiError(String code, String message, String status, Map<String, Object> generalError){
-        return ApiErrorError.builder()
+    public ErrorDetail builderApiError(String code, String message, String status, Map<String, Object> generalError){
+        return ErrorDetail.builder()
                 .code(code)
                 .message(message)
                 .status(status)

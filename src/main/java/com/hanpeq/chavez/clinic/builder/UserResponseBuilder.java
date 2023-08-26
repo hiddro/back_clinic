@@ -2,6 +2,7 @@ package com.hanpeq.chavez.clinic.builder;
 
 import com.hanpeq.chavez.clinic.dto.PasswordResponse;
 import com.hanpeq.chavez.clinic.dto.RolDetails;
+import com.hanpeq.chavez.clinic.dto.UserDetails;
 import com.hanpeq.chavez.clinic.dto.UserResponse;
 import com.hanpeq.chavez.clinic.models.RolePrinciṕal;
 import com.hanpeq.chavez.clinic.models.UserPrincipal;
@@ -28,6 +29,7 @@ public class UserResponseBuilder {
                 .code(userPrincipal.getCode())
                 .status(userPrincipal.getStatus())
                 .roles(userPrincipal.getRoles() == null ? new ArrayList<>() : buildRolDetails(userPrincipal.getRoles()))
+                .details(userPrincipal.getDetails() == null ? null : userPrincipal.getDetails())
                 .build();
     }
 

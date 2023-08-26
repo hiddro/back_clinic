@@ -390,6 +390,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RolDetails'
+        details:
+          $ref: '#/components/schemas/UserDetails'
     UserUpdateRequest:
       type: object
       properties:
@@ -402,9 +404,29 @@ components:
         email:
           type: string
           example: edd.ckalb@gmail.com
-        password:
+        status:
           type: string
-          example: '*****'
+          example: "true"
+        details:
+          $ref: '#/components/schemas/UserDetails'
+    UserDetails:
+      type: object
+      properties:
+        telefono:
+          type: string
+          example: "983478763"
+        direccion:
+          type: string
+          example: Avenida San Felipe 540
+        genero:
+          type: string
+          example: Masculino
+        nacimiento:
+          type: string
+          example: 10-03-1993
+        edad:
+          type: string
+          example: "30"
     RolDetails:
       type: object
       properties:
@@ -471,8 +493,8 @@ components:
       type: object
       properties:
         error:
-          $ref: '#/components/schemas/ApiError_error'
-    ApiError_error:
+          $ref: '#/components/schemas/ErrorDetail'
+    ErrorDetail:
       type: object
       properties:
         code:

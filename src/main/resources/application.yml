@@ -9,7 +9,7 @@ spring:
 
 jjwt:
   secret: 4u7x!A%D*G-KaNdRgUkXp2s5v8y/B?E(H+MbQeShVmYq3t6w9z$C&F)J@NcRfUjW
-  expiration: 600
+  expiration: 1800
 
 server:
   port: 8081

@@ -1,6 +1,7 @@
 package com.hanpeq.chavez.clinic.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.hanpeq.chavez.clinic.dto.UserDetails;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -36,4 +37,6 @@ public class UserPrincipal {
     private String status;
 
     private List<RolePrinciṕal> roles;
+
+    private UserDetails details;
 }

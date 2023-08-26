@@ -45,6 +45,7 @@ public class UserRequestBuilder {
                 .code(userPrincipal.getCode())
                 .status(userPrincipal.getStatus())
                 .roles(userPrincipal.getRoles())
+                .details(userPrincipal.getDetails())
                 .build();
     }
 
@@ -54,11 +55,12 @@ public class UserRequestBuilder {
                 .names(userUpdateRequest.getNames())
                 .lastNames(userUpdateRequest.getLastNames())
                 .username(userPrincipal.getUsername())
-                .password(passwordEncoder.encode(userUpdateRequest.getPassword()))
+                .password(userPrincipal.getPassword())
                 .email(userUpdateRequest.getEmail())
                 .code(userPrincipal.getCode())
-                .status(userPrincipal.getStatus())
+                .status("true")
                 .roles(userPrincipal.getRoles())
+                .details(userUpdateRequest.getDetails())
                 .build();
     }
 }
